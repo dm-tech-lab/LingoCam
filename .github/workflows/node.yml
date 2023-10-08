@@ -1,0 +1,53 @@
+name: React CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install and use pnpm
+      run: |
+        cd client
+        npm install -g pnpm
+        pnpm config set store-dir ~/.pnpm-store
+
+    - name: Restore pnpm cache
+      run: |
+        cd client
+        pnpm install
+    
+    - name: Restore pnpm cache
+      run: |
+        cd client
+        pnpm run build --if-present
+
+    - name: Cache pnpm
+      uses: actions/cache@v2
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+    - name: Run Tests
+      run: |
+        cd client
+        pnpm test
