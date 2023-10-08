@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { registerSW } from "virtual:pwa-register";
-import Loader from "./components/shared/Loader.tsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { LoadingProvider } from "./context/LoadingContext.tsx";
+import MainLoader from "./components/shared/MainLoader.tsx";
 
 // add this to prompt for a refresh
 const updateSW = registerSW({
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    loader: () => <Loader />,
+    loader: () => <MainLoader />,
   },
 ]);
 
