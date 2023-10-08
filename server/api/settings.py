@@ -1,6 +1,7 @@
 import os
 import dj_database_url
 from pathlib import Path
+from datetime import timedelta
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -26,6 +27,22 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     
+    # Django REST Authentication
+    "django.contrib.sites",
+    
+    # Django REST Framework
+    "rest_framework",
+    "rest_framework.authtoken",
+    
+    # Django REST Authentication
+    "dj_rest_auth", 
+    "dj_rest_auth.registration",
+    
+    # Django Allauth
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    
     # Django SSL Server
     "sslserver",
     
@@ -42,12 +59,60 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://lingocam.dm-tech.me"
 ]
+
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+SITE_ID = 1
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 14,
+    "PAGINATE_BY_PARAM": "page_size",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ),
+}
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+LOGIN_URL = "https://lingocam.dm-tech.me/email-verified/"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = f"LingoCam <{os.environ.get('EMAIL_HOST_USER')}>"
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "[LingoCam] "
+
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "authentication-token",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh-token",
+    "PASSWORD_RESET_USE_SITES_DOMAIN": True
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=15),
+    "ROTATE_REFRESH_TOKENS": True,
+}
 
 ROOT_URLCONF = "api.urls"
 
