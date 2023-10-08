@@ -19,19 +19,15 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v3
 
-    - name: Install and use pnpm
+    - name: Install pnpm
       run: |
         cd client
         npm install -g pnpm
 
-    - name: Restore pnpm cache
+    - name: Install and build pnpm cache
       run: |
         cd client
         pnpm install
-    
-    - name: Restore pnpm cache
-      run: |
-        cd client
         pnpm run build
 
     - name: Cache pnpm
