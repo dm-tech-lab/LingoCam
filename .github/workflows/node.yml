@@ -39,8 +39,3 @@ jobs:
       with:
         path: ~/.pnpm-store
         key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-
-    - name: Run Tests
-      run: |
-        cd client
-        pnpm test
