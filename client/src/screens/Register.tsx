@@ -1,21 +1,61 @@
 import { Link } from "react-router-dom";
 import { RegisterSchema } from "../schemas/RegisterSchema";
 import { Formik, Field, Form } from "formik";
+import { API_URL } from "../constants/urls";
+import { useLoading } from "../context/LoadingContext";
+import Loader from "../components/shared/Loader";
+import { ToastContainer, toast } from "react-toastify";
+import { showErrorToast, showSuccToast } from "../utils/Toast";
+
+interface RegisterInitValues {
+  email: string;
+  username: string;
+  password1: string;
+  password2: string;
+}
 
 const Register = () => {
+  const { setLoading } = useLoading();
+
+  const RegisterUser = async (values: RegisterInitValues) => {
+    setLoading(true);
+
+    const data = await fetch(`${API_URL}/auth/register/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const response = await data.json();
+    if (data.ok) showSuccToast(response.detail, () => toast.dismiss());
+    else {
+      for (const key in response) {
+        if (Array.isArray(response[key]) && response[key].length > 0) {
+          const errorMessage = response[key][0];
+          showErrorToast(errorMessage, () => toast.dismiss());
+          break;
+        }
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <Formik
       initialValues={{
         email: "",
         username: "",
-        password: "",
-        confirmPassword: "",
+        password1: "",
+        password2: "",
       }}
       validationSchema={RegisterSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values: RegisterInitValues) => RegisterUser(values)}
     >
       {({ errors, touched }) => (
         <Form>
+          <Loader />
+          <ToastContainer />
           <section className="bg-gray-50 dark:bg-gray-900 h-screen">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0 ">
               <a className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -68,22 +108,22 @@ const Register = () => {
                   </div>
                   <div>
                     <label
-                      htmlFor="password"
+                      htmlFor="password1"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
                       Password
                     </label>
                     <Field
                       type="password"
-                      name="password"
-                      id="password"
+                      name="password1"
+                      id="password1"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
                     />
-                    {errors.password && touched.password && (
+                    {errors.password1 && touched.password1 && (
                       <div className="text-sm text-red-500">
-                        {errors.password}
+                        {errors.password1}
                       </div>
                     )}
                   </div>
@@ -95,16 +135,16 @@ const Register = () => {
                       Confirm password
                     </label>
                     <Field
-                      type="confirm-password"
-                      name="confirmPassword"
-                      id="confirmPassword"
+                      type="password"
+                      name="password2"
+                      id="password2"
                       placeholder="••••••••"
                       className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
                     />
-                    {errors.confirmPassword && touched.confirmPassword && (
+                    {errors.password2 && touched.password2 && (
                       <div className="text-sm text-red-500">
-                        {errors.confirmPassword}
+                        {errors.password2}
                       </div>
                     )}
                   </div>

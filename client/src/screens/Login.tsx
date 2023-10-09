@@ -1,8 +1,44 @@
 import { Link } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import { LoginSchema } from "../schemas/LoginSchema";
+import { showErrorToast, showSuccToast } from "../utils/Toast";
+import { useLoading } from "../context/LoadingContext";
+import { API_URL } from "../constants/urls";
+import { ToastContainer, toast } from "react-toastify";
+import Loader from "../components/shared/Loader";
+
+interface LoginInitValues {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
+  const { setLoading } = useLoading();
+
+  const LoginUser = async (values: LoginInitValues) => {
+    setLoading(true);
+
+    const data = await fetch(`${API_URL}/auth/login/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    });
+    const response = await data.json();
+    if (data.ok) showSuccToast(response.detail, () => toast.dismiss());
+    else {
+      for (const key in response) {
+        if (Array.isArray(response[key]) && response[key].length > 0) {
+          const errorMessage = response[key][0];
+          showErrorToast(errorMessage, () => toast.dismiss());
+          break;
+        }
+      }
+    }
+    setLoading(false);
+  };
+
   return (
     <Formik
       initialValues={{
@@ -10,10 +46,12 @@ const Login = () => {
         password: "",
       }}
       validationSchema={LoginSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={(values: LoginInitValues) => LoginUser(values)}
     >
       {({ errors, touched }) => (
         <Form>
+          <Loader />
+          <ToastContainer />
           <section className="bg-gray-50 dark:bg-gray-900 h-screen">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
               <a className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">

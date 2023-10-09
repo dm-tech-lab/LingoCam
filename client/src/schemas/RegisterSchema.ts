@@ -1,12 +1,12 @@
 import * as Yup from "yup";
 
 export const RegisterSchema = Yup.object().shape({
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
+  password2: Yup.string()
+    .oneOf([Yup.ref("password1")], "Passwords must match")
     .min(8, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  password: Yup.string()
+  password1: Yup.string()
     .min(8, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
