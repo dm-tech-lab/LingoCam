@@ -1,6 +1,5 @@
 import Webcam from "react-webcam";
-import { useWindowSize } from "../context/WindowSize";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useProtectedRoute } from "../utils/ProtectedRoutes";
 
 const FACING_MODE_USER = "user";
@@ -13,9 +12,6 @@ const videoConstraints = {
 const Camera = () => {
   useProtectedRoute();
 
-  const { width, height } = useWindowSize();
-  const isLandscape = width <= height;
-
   const [facingMode, setFacingMode] = useState(FACING_MODE_USER);
 
   const handleClick = useCallback(() => {
@@ -25,12 +21,6 @@ const Camera = () => {
         : FACING_MODE_USER
     );
   }, []);
-
-  const videoConstraints = {
-    width: isLandscape ? width : height,
-    height: isLandscape ? height : width,
-    facingMode: facingMode,
-  };
 
   return (
     <div className="flex flex-col h-screen">
