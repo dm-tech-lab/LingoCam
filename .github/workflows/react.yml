@@ -2,36 +2,35 @@ name: React CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
-        node-version: [20.x]
+        node-version: [18.18.0]
 
     steps:
-    - name: Check out repository code
-      uses: actions/checkout@v3
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-    - name: Install pnpm
-      run: |
-        cd client
-        npm install -g pnpm
+      - name: Install pnpm
+        run: |
+          cd client
+          npm install -g pnpm
 
-    - name: Install and build pnpm cache
-      run: |
-        cd client
-        pnpm install
-        pnpm run build
+      - name: Install and build pnpm cache
+        run: |
+          cd client
+          pnpm install
+          pnpm run build
 
-    - name: Cache pnpm
-      uses: actions/cache@v2
-      with:
-        path: ~/.pnpm-store
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Cache pnpm
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
