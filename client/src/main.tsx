@@ -7,6 +7,7 @@ import { LoadingProvider } from "./context/LoadingContext.tsx";
 import MainLoader from "./components/shared/MainLoader.tsx";
 import Register from "./screens/Register.tsx";
 import Login from "./screens/Login.tsx";
+import Camera from "./screens/Camera.tsx";
 
 // // add this to prompt for a refresh
 const updateSW = registerSW({
@@ -26,6 +27,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+    loader: () => <MainLoader />,
+  },
+  {
+    path: "/camera",
+    element: <Camera />,
     loader: () => <MainLoader />,
   },
 ]);

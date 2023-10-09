@@ -14,9 +14,11 @@
   },
   "dependencies": {
     "flowbite": "^1.8.1",
+    "formik": "^2.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
+    "react-webcam": "^7.1.1",
     "vite-plugin-pwa": "^0.16.5"
   },
   "devDependencies": {
