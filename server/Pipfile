@@ -19,8 +19,7 @@ djangorestframework-simplejwt = "*"
 numpy = "*"
 pillow = "*"
 deep-translator = "*"
-easyocr = "*"
-torch = "*"
+pytesseract = "*"
 
 [dev-packages]
 
