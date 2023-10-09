@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       // add this to cache all the imports
       workbox: {
         globPatterns: ["**/*"],
@@ -16,6 +16,7 @@ export default defineConfig({
       // static assets in the public folder
       includeAssets: ["**/*"],
       manifest: {
+        orientation: "portrait",
         theme_color: "#f69435",
         background_color: "#f69435",
         display: "fullscreen",
