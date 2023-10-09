@@ -20,6 +20,7 @@ pytesseract = "*"
 numpy = "*"
 pillow = "*"
 deep-translator = "*"
+easyocr = "*"
 
 [dev-packages]
 
