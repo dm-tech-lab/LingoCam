@@ -8,13 +8,13 @@ const Camera = () => {
 
   const { width, height } = useWindowSize();
   const isLandscape = width <= height;
-  const [facingMode, setFacingMode] = useState("user");
+  const [facingMode, setFacingMode] = useState<object | string>("user");
 
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (isMobile) {
-      setFacingMode("environment"); // Use rear camera on mobile
+      setFacingMode({ exact: "environment" }); // Use rear camera on mobile
     } else {
       setFacingMode("user"); // Use front camera on desktop
     }
