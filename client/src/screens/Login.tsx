@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik, Form, Field } from "formik";
 import { LoginSchema } from "../schemas/LoginSchema";
 import { showErrorToast, showSuccToast } from "../utils/Toast";
@@ -14,6 +14,7 @@ interface LoginInitValues {
 
 const Login = () => {
   const { setLoading } = useLoading();
+  const navigate = useNavigate();
 
   const LoginUser = async (values: LoginInitValues) => {
     setLoading(true);
@@ -26,8 +27,11 @@ const Login = () => {
       body: JSON.stringify(values),
     });
     const response = await data.json();
-    if (data.ok) showSuccToast(response.detail, () => toast.dismiss());
-    else {
+    if (data.ok) {
+      sessionStorage.setItem("token", response.access);
+      showSuccToast("Successful Login", () => toast.dismiss());
+      navigate("/camera");
+    } else {
       for (const key in response) {
         if (Array.isArray(response[key]) && response[key].length > 0) {
           const errorMessage = response[key][0];
