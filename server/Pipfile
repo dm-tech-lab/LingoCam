@@ -16,6 +16,10 @@ djangorestframework = "*"
 dj-rest-auth = "*"
 django-allauth = "*"
 djangorestframework-simplejwt = "*"
+pytesseract = "*"
+numpy = "*"
+pillow = "*"
+deep-translator = "*"
 
 [dev-packages]
 
