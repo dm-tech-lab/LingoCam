@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      registerType: "autoUpdate",
       // add this to cache all the imports
       workbox: {
         globPatterns: ["**/*"],
@@ -28,6 +29,7 @@ export default defineConfig({
             src: "./public/android-48-48.png",
             sizes: "48x48",
             type: "image/png",
+            purpose: "maskable any",
           },
           {
             src: "./public/android-72-72.png",
