@@ -2,19 +2,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { registerSW } from "virtual:pwa-register";
+// import { registerSW } from "virtual:pwa-register";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { LoadingProvider } from "./context/LoadingContext.tsx";
 import MainLoader from "./components/shared/MainLoader.tsx";
 
-// add this to prompt for a refresh
-const updateSW = registerSW({
-  onNeedRefresh() {
-    if (confirm("New content available. Reload?")) {
-      updateSW(true);
-    }
-  },
-});
+// // add this to prompt for a refresh
+// const updateSW = registerSW({
+//   onNeedRefresh() {
+//     if (confirm("New content available. Reload?")) {
+//       updateSW(true);
+//     }
+//   },
+// });
 
 const router = createBrowserRouter([
   {

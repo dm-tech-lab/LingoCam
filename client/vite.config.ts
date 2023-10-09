@@ -30,7 +30,7 @@ export default defineConfig({
             src: "./public/android-48-48.png",
             sizes: "48x48",
             type: "image/png",
-            purpose: "maskable any",
+            purpose: "any maskable",
           },
           {
             src: "./public/android-72-72.png",
@@ -46,6 +46,7 @@ export default defineConfig({
             src: "./public/android-144-144.png",
             sizes: "144x144",
             type: "image/png",
+            purpose: "any maskable",
           },
           {
             src: "./public/android-192-192.png",
