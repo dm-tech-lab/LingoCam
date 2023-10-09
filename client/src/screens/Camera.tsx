@@ -14,7 +14,7 @@ const Camera = () => {
 
   const webcamRef = useRef<any>(null);
   const [, setImgSrc] = useState(null);
-  const [facingMode, ] = useState(FACING_MODE_ENVIRONMENT);
+  const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
   // const handleSwitchCamera = useCallback(() => {
   //   setFacingMode((prevState) =>
@@ -30,7 +30,7 @@ const Camera = () => {
   }, [webcamRef]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex">
       <Webcam
         ref={webcamRef}
         audio={false}
@@ -39,16 +39,23 @@ const Camera = () => {
           ...videoConstraints,
           facingMode,
         }}
+        style={{
+          position: "absolute",
+          textAlign: "center",
+          zIndex: 8,
+          right: 0,
+          height: "100vh",
+          width: "100%",
+          objectFit: "fill",
+        }}
         className="flex-1"
       />
-      <div className="flex justify-center items-center">
-        <button
-          onClick={capturePhoto}
-          className="w-40 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Capture photo
-        </button>
-      </div>
+      <button
+        onClick={capturePhoto}
+        className="z-50 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 absolute bottom-10 left-1/2 transform -translate-x-1/2"
+      >
+        Capture photo
+      </button>
     </div>
   );
 };
