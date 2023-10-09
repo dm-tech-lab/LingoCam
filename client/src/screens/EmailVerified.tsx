@@ -14,7 +14,7 @@ const EmailVerified = () => {
   }, []);
 
   useEffect(() => {
-    if (countdown === 0) navigate("/");
+    if (countdown === 0) navigate("/login");
   }, [countdown, navigate]);
 
   return (
