@@ -12,7 +12,7 @@ const Login = () => {
       validationSchema={LoginSchema}
       onSubmit={(values) => console.log(values)}
     >
-      {({ errors, touched, isValidating }) => (
+      {({ errors, touched }) => (
         <Form>
           <section className="bg-gray-50 dark:bg-gray-900 h-screen">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
