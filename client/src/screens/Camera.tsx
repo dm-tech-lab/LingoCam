@@ -13,8 +13,8 @@ const Camera = () => {
   useProtectedRoute();
 
   const webcamRef = useRef<any>(null);
-  const [imgSrc, setImgSrc] = useState(null);
-  const [facingMode, setFacingMode] = useState(FACING_MODE_ENVIRONMENT);
+  const [, setImgSrc] = useState(null);
+  const [facingMode, ] = useState(FACING_MODE_ENVIRONMENT);
 
   // const handleSwitchCamera = useCallback(() => {
   //   setFacingMode((prevState) =>
