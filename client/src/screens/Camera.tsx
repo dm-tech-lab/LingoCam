@@ -1,8 +1,11 @@
 import Webcam from "react-webcam";
 import { useWindowSize } from "../context/WindowSize";
 import { useEffect, useState } from "react";
+import { useProtectedRoute } from "../utils/ProtectedRoutes";
 
 const Camera = () => {
+  useProtectedRoute();
+
   const { width, height } = useWindowSize();
   const isLandscape = width <= height;
   const [facingMode, setFacingMode] = useState("user");

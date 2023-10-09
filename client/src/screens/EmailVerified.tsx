@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useProtectedRoute } from "../utils/ProtectedRoutes";
 
 const EmailVerified = () => {
+  useProtectedRoute();
+
   const [countdown, setCountdown] = useState(5);
   const navigate = useNavigate();
 
