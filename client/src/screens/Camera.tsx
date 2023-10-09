@@ -1,5 +1,5 @@
 import Webcam from "react-webcam";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useProtectedRoute } from "../utils/ProtectedRoutes";
 
 const FACING_MODE_USER = "user";
@@ -12,19 +12,27 @@ const videoConstraints = {
 const Camera = () => {
   useProtectedRoute();
 
-  const [facingMode, setFacingMode] = useState(FACING_MODE_USER);
+  const webcamRef = useRef<any>(null);
+  const [imgSrc, setImgSrc] = useState(null);
+  const [facingMode, setFacingMode] = useState(FACING_MODE_ENVIRONMENT);
 
-  const handleClick = useCallback(() => {
-    setFacingMode((prevState) =>
-      prevState === FACING_MODE_USER
-        ? FACING_MODE_ENVIRONMENT
-        : FACING_MODE_USER
-    );
-  }, []);
+  // const handleSwitchCamera = useCallback(() => {
+  //   setFacingMode((prevState) =>
+  //     prevState === FACING_MODE_USER
+  //       ? FACING_MODE_ENVIRONMENT
+  //       : FACING_MODE_USER
+  //   );
+  // }, []);
+
+  const capturePhoto = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImgSrc(imageSrc);
+  }, [webcamRef]);
 
   return (
     <div className="flex flex-col h-screen">
       <Webcam
+        ref={webcamRef}
         audio={false}
         screenshotFormat="image/jpeg"
         videoConstraints={{
@@ -33,12 +41,14 @@ const Camera = () => {
         }}
         className="flex-1"
       />
-      <button
-        onClick={handleClick}
-        className="bg-blue-500 text-white py-2 px-4 absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10"
-      >
-        Switch camera
-      </button>
+      <div className="flex justify-center items-center">
+        <button
+          onClick={capturePhoto}
+          className="w-40 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Capture photo
+        </button>
+      </div>
     </div>
   );
 };
