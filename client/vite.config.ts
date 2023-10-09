@@ -17,16 +17,41 @@ export default defineConfig({
       manifest: {
         theme_color: "#f69435",
         background_color: "#f69435",
-        display: "standalone",
+        display: "fullscreen",
         scope: "/",
         start_url: "/",
-        short_name: "lingo",
-        description: "lingo",
-        name: "lingo",
+        short_name: "LingoCam",
+        description: "LingoCam",
+        name: "LingoCam",
         icons: [
           {
-            src: "./public/icon-192x192.png",
+            src: "./public/android-48-48.png",
+            sizes: "48x48",
+            type: "image/png",
+          },
+          {
+            src: "./public/android-72-72.png",
+            sizes: "72x72",
+            type: "image/png",
+          },
+          {
+            src: "./public/android-96-96.png",
+            sizes: "96x96",
+            type: "image/png",
+          },
+          {
+            src: "./public/android-144-144.png",
+            sizes: "144x144",
+            type: "image/png",
+          },
+          {
+            src: "./public/android-192-192.png",
             sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "./public/android-512-512.png",
+            sizes: "512x512",
             type: "image/png",
           },
         ],
