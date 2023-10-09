@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2fa4d82504bf110a58d1ed23ceb7b66b65f5155528b3b9d2356605ce194e055b"
+            "sha256": "7423c0e8b554d02555681c5e00d985e95c49483bd26410d46ad9b6ce673c45b1"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -831,15 +831,6 @@
             "markers": "python_version >= '3.7'",
             "version": "==2.8.0"
         },
-        "pytesseract": {
-            "hashes": [
-                "sha256:8f22cc98f765bf13517ead0c70effedb46c153540d25783e04014f28b55a5fc6",
-                "sha256:f1c3a8b0f07fd01a1085d451f5b8315be6eec1d5577a6796d46dc7a62bd4120f"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==0.3.10"
-        },
         "python-bidi": {
             "hashes": [
                 "sha256:50eef6f6a0bbdd685f9e8c207f3c9050f5b578d0a46e37c76a9c4baea2cc2e13",
@@ -1049,7 +1040,7 @@
                 "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926",
                 "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"
             ],
-            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
+            "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'",
             "version": "==1.16.0"
         },
         "soupsieve": {
