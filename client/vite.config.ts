@@ -27,34 +27,34 @@ export default defineConfig({
         name: "LingoCam",
         icons: [
           {
-            src: "./public/android-48-48.png",
+            src: "/icons/android-48-48.png",
             sizes: "48x48",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "./public/android-72-72.png",
+            src: "/icons/android-72-72.png",
             sizes: "72x72",
             type: "image/png",
           },
           {
-            src: "./public/android-96-96.png",
+            src: "/icons/android-96-96.png",
             sizes: "96x96",
             type: "image/png",
           },
           {
-            src: "./public/android-144-144.png",
+            src: "/icons/android-144-144.png",
             sizes: "144x144",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "./public/android-192-192.png",
+            src: "/icons/android-192-192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "./public/android-512-512.png",
+            src: "/icons/android-512-512.png",
             sizes: "512x512",
             type: "image/png",
           },
