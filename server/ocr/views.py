@@ -10,14 +10,14 @@ from deep_translator import GoogleTranslator
 from .serializers import ImageUploadSerializer
 
 class TranslationView(APIView):
-    
+
     def post(self, request):
         if not request.user.is_authenticated:
             return Response({ "message": "You are not logged in!" }, status=status.HTTP_401_UNAUTHORIZED)
         serializer = ImageUploadSerializer(data=request.data)
-        
+
         if serializer.is_valid():
-            pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+            pytesseract.pytesseract.tesseract_cmd = "./tesseract"
             image = np.array(Image.open(serializer.validated_data["image"]))
             text = pytesseract.image_to_string(image)
             result = GoogleTranslator(source="auto", target="bg").translate(text=str(text).strip())
@@ -27,6 +27,7 @@ class TranslationView(APIView):
                 result=result
             )
             return Response({
+                "text": text,
                 "result": result
             })
         else:

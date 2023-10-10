@@ -104,7 +104,6 @@ venv/
 ENV/ 
 env.bak/ 
 venv.bak/
-Pipfile.lock
 
 # mkdocs documentation 
 /site 
