@@ -64,6 +64,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = ["*"]
+CORS_ALLOW_ALL_ORIGINS = True
 
 AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
