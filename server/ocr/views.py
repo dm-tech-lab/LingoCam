@@ -17,7 +17,7 @@ class TranslationView(APIView):
         serializer = ImageUploadSerializer(data=request.data)
 
         if serializer.is_valid():
-            pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+            pytesseract.pytesseract.tesseract_cmd = "./tesseract"
             image = np.array(Image.open(serializer.validated_data["image"]))
             text = pytesseract.image_to_string(image)
             result = GoogleTranslator(source="auto", target="bg").translate(text=str(text).strip())
