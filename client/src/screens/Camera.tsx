@@ -1,6 +1,7 @@
 import Webcam from "react-webcam";
 import { useCallback, useRef, useState } from "react";
 import { useProtectedRoute } from "../utils/ProtectedRoutes";
+import { API_URL } from "../constants/urls";
 
 const FACING_MODE_USER = "user";
 const FACING_MODE_ENVIRONMENT = "environment";
@@ -24,9 +25,39 @@ const Camera = () => {
   //   );
   // }, []);
 
-  const capturePhoto = useCallback(() => {
+  const capturePhoto = useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
+
+    // Extract the base64 data from the imageSrc
+    const base64Data = imageSrc.split(",")[1];
+
+    // Decode base64 to binary
+    const binaryData = atob(base64Data);
+
+    // Create an array to hold the binary data
+    const dataArray = new Uint8Array(binaryData.length);
+    for (let i = 0; i < binaryData.length; i++) {
+      dataArray[i] = binaryData.charCodeAt(i);
+    }
+
+    // Create a Blob object from the binary data
+    const blob = new Blob([dataArray], { type: "image/jpeg" }); // Adjust the type as needed
+
+    // Create a FormData object to send the file as part of the request body
+    const formData = new FormData();
+    formData.append("image", blob, "photo.jpeg");
+
+    const data = await fetch(`${API_URL}/`, {
+      method: "POST",
+      headers: {
+        "Context-Type": "image/jpeg",
+      },
+      body: formData,
+    });
+
+    const response = await data.json();
+    console.log(response);
   }, [webcamRef]);
 
   return (
