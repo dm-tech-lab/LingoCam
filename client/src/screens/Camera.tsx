@@ -14,7 +14,6 @@ const Camera = () => {
   useProtectedRoute();
 
   const webcamRef = useRef<any>(null);
-  const [, setImgSrc] = useState(null);
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
   // const handleSwitchCamera = useCallback(() => {
@@ -27,45 +26,27 @@ const Camera = () => {
 
   const capturePhoto = useCallback(async () => {
     const imageSrc = webcamRef.current.getScreenshot();
-    setImgSrc(imageSrc);
-
-    // Extract the base64 data from the imageSrc
-    const base64Data = imageSrc.split(",")[1];
-
-    // Decode base64 to binary
-    const binaryData = atob(base64Data);
-
-    // Create an array to hold the binary data
-    const dataArray = new Uint8Array(binaryData.length);
-    for (let i = 0; i < binaryData.length; i++) {
-      dataArray[i] = binaryData.charCodeAt(i);
-    }
-
-    // Create a Blob object from the binary data
-    const blob = new Blob([dataArray], { type: "image/jpeg" }); // Adjust the type as needed
-
-    // Create a FormData object to send the file as part of the request body
     const formData = new FormData();
-    formData.append("image", blob, "photo.jpeg");
-
+    formData.append("image", imageSrc);
+  
     const data = await fetch(`${API_URL}/`, {
       method: "POST",
       headers: {
-        "Context-Type": "image/jpeg",
+        "Authorization": `Bearer ${sessionStorage.getItem("token")!}`
       },
       body: formData,
     });
-
+  
     const response = await data.json();
     console.log(response);
-  }, [webcamRef]);
+  }, [webcamRef]);  
 
   return (
     <div className="flex">
       <Webcam
         ref={webcamRef}
         audio={false}
-        screenshotFormat="image/jpeg"
+        screenshotFormat="image/png"
         videoConstraints={{
           ...videoConstraints,
           facingMode,
