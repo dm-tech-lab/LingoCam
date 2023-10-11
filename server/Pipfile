@@ -21,6 +21,7 @@ pillow = "*"
 deep-translator = "*"
 pytesseract = "*"
 openai = "*"
+easyocr = "*"
 
 [dev-packages]
 

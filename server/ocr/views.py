@@ -1,6 +1,7 @@
 from .models import *
 from .serializers import *
 
+import easyocr
 import platform
 import pytesseract
 import numpy as np
@@ -21,11 +22,11 @@ class TranslationView(APIView):
         serializer = ImageUploadSerializer(data=request.data)
 
         if serializer.is_valid():
-            if platform.system() == "Windows":
-                pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-                
+            # if platform.system() == "Windows":
+            #     pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+            reader = easyocr.Reader(["en"], gpu=False)
             image = np.array(Image.open(serializer.validated_data["image"]))
-            text = pytesseract.image_to_string(image)
+            text = str().join(reader.readtext(image, detail=0))
             result = GoogleTranslator(source="auto", target="bg").translate(text=str(text).strip())
             Translation.objects.create(
                 user=request.user,
