@@ -19,7 +19,6 @@ djangorestframework-simplejwt = "*"
 numpy = "*"
 pillow = "*"
 deep-translator = "*"
-pytesseract = "*"
 openai = "*"
 easyocr = "*"
 
