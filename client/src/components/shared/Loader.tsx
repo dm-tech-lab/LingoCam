@@ -6,7 +6,7 @@ const Loader = () => {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center text-center bg-white z-50">
+        <div className="fixed inset-0 flex items-center justify-center text-center bg-white" style={{zIndex: "99999999"}}>
           <div role="status">
             <svg
               aria-hidden="true"
