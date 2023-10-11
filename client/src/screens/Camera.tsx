@@ -30,7 +30,7 @@ const Camera = () => {
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
   const [translatedText, setTransatedText] = useState("");
-  const [_, setGPTAnswer] = useState("");
+  const [gptAnswer, setGPTAnswer] = useState("");
 
   const webcamRef = useRef<any>(null);
 
@@ -98,6 +98,7 @@ const Camera = () => {
     const response = await data.json();
     setGPTAnswer(response.answer);
 
+    setIsGPTModalOpen(false);
     setLoading(false);
   };
 
@@ -240,6 +241,32 @@ const Camera = () => {
             Ask GPT
           </button>
         </div>
+      </Modal>
+      <Modal
+        isOpen={isGPTModalOpen}
+        contentLabel="GPT Modal"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "1000px",
+            minWidth: isMobile ? "90%" : "50%",
+            padding: "60px 50px",
+            fontSize: "2rem",
+            borderRadius: "20px",
+          },
+        }}
+        onRequestClose={() => setIsGPTModalOpen(false)}
+        shouldCloseOnOverlayClick={true}
+        ariaHideApp={false}
+      >
+        <div>{gptAnswer}</div>
       </Modal>
     </div>
   );
