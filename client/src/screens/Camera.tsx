@@ -27,7 +27,7 @@ const Camera = () => {
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
   const [translatedText, setTransatedText] = useState("");
-  const [gptAnswer, setGPTAnswer] = useState("");
+  const [_, setGPTAnswer] = useState("");
 
   const webcamRef = useRef<any>(null);
 
