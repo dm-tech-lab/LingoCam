@@ -2,9 +2,12 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import { API_URL } from "../constants/urls";
+import { useNavigate } from "react-router-dom";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState("");
+
+  const navigate = useNavigate();
 
   const fileValidationSchema = Yup.object().shape({
     file: Yup.mixed().required("A file is required"),
@@ -18,6 +21,13 @@ const FileUpload = () => {
 
   return (
     <div className="flex items-center justify-center">
+      <button
+        type="button"
+        onClick={() => navigate("/camera")}
+        className="fixed right-2 top-2 font-medium underline z-50"
+      >
+        Camera
+      </button>
       <div className="mx-auto w-full max-w-[550px] bg-white">
         <Formik
           initialValues={{

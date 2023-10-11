@@ -1,15 +1,15 @@
-import Webcam from "react-webcam";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useProtectedRoute } from "../utils/ProtectedRoutes";
 import { API_URL } from "../constants/urls";
 import { useLoading } from "../context/LoadingContext";
-import Modal from "react-modal";
 import { Field, Form, Formik } from "formik";
 import { QASchema } from "../schemas/QASchema";
 import { showErrorToast } from "../utils/Toast";
 import { ToastContainer, toast } from "react-toastify";
-import Loader from "../components/shared/Loader";
 import { useNavigate } from "react-router-dom";
+import Webcam from "react-webcam";
+import Modal from "react-modal";
+import Loader from "../components/shared/Loader";
 
 interface IGPTValuesForm {
   question: string;
@@ -59,7 +59,7 @@ const Camera = () => {
   }, []);
 
   const handleCameraError = (err) => {
-    if (err.name === 'NotAllowedError') navigate('/file-upload')
+    if (err.name === "NotAllowedError") navigate("/file-upload");
   };
 
   const capturePhoto = useCallback(async () => {
@@ -121,6 +121,14 @@ const Camera = () => {
     <div className="flex">
       <Loader />
       <ToastContainer style={{ zIndex: "99999" }} />
+      <button
+        type="button"
+        onClick={() => navigate("/file-upload")}
+        className="fixed right-2 top-2 font-medium underline z-50"
+      >
+        Upload
+      </button>
+
       <Webcam
         ref={webcamRef}
         audio={false}
