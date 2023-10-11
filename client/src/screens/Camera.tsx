@@ -1,5 +1,5 @@
 import Webcam from "react-webcam";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useProtectedRoute } from "../utils/ProtectedRoutes";
 import { API_URL } from "../constants/urls";
 import { useLoading } from "../context/LoadingContext";
@@ -18,7 +18,7 @@ const Camera = () => {
   useProtectedRoute();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(false);
   const webcamRef = useRef<any>(null);
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
@@ -31,6 +31,16 @@ const Camera = () => {
   //       : FACING_MODE_USER
   //   );
   // }, []);
+
+  useEffect(() => {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    )
+      setIsMobile(true);
+    else setIsMobile(false);
+  }, []);
 
   const capturePhoto = useCallback(async () => {
     setLoading(true);
@@ -116,7 +126,7 @@ const Camera = () => {
             bottom: "auto",
             transform: "translate(-50%, -50%)",
             maxWidth: "1000px",
-            minWidth: "90%",
+            minWidth: isMobile ? "90%" : "50%",
             padding: "60px 50px",
             fontSize: "2rem",
             borderRadius: "20px",
