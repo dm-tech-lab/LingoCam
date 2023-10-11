@@ -2,25 +2,74 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import { API_URL } from "../constants/urls";
-import { useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { showErrorToast } from "../utils/Toast";
+import { ToastContainer, toast } from "react-toastify";
+import Loader from "../components/shared/Loader";
+import { useLoading } from "../context/LoadingContext";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState("");
+  const [base64String, setBase64String] = useState("");
+  const [textResult, setTextResult] = useState("");
 
   const navigate = useNavigate();
+  const { setLoading } = useLoading();
 
   const fileValidationSchema = Yup.object().shape({
     file: Yup.mixed().required("A file is required"),
   });
 
   const submitFile = async () => {
-    const data = await fetch(`${API_URL}`);
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("image", base64String);
+
+    const data = await fetch(`${API_URL}/ocr/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")!}`,
+      },
+      body: formData,
+    });
     const response = await data.json();
-    console.log(response);
+    setTextResult(response.result);
+
+    setLoading(false);
+  };
+
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const base64 = arrayBufferToBase64(e.target!.result);
+        setBase64String(base64);
+      };
+
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const arrayBufferToBase64 = (buffer) => {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+
+    return window.btoa(binary);
   };
 
   return (
     <div className="flex items-center justify-center">
+      <Loader />
+      <ToastContainer />
       <button
         type="button"
         onClick={() => navigate("/camera")}
@@ -34,7 +83,7 @@ const FileUpload = () => {
             file: null,
           }}
           validationSchema={fileValidationSchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={submitFile}
         >
           {({ errors, touched, setFieldValue }) => (
             <Form className="py-6 px-9">
@@ -48,10 +97,30 @@ const FileUpload = () => {
                     type="file"
                     name="file"
                     id="file"
+                    accept=".jpg, .jpeg, .png, .pdf"
                     className="sr-only"
                     onChange={(event) => {
-                      setFieldValue("file", event.currentTarget.files![0]);
-                      setSelectedFile(event.currentTarget.files![0].name);
+                      const selectedFile = event.currentTarget.files![0];
+                      handleFileInputChange(event);
+                      if (selectedFile) {
+                        const fileType = selectedFile.type;
+                        const allowedFileTypes = [
+                          "image/jpeg",
+                          "image/jpg",
+                          "image/png",
+                          "application/pdf",
+                        ];
+
+                        if (allowedFileTypes.includes(fileType)) {
+                          setFieldValue("file", selectedFile);
+                          setSelectedFile(selectedFile.name);
+                        } else {
+                          showErrorToast(
+                            "Invalid file type. Please select a valid file.",
+                            () => toast.dismiss()
+                          );
+                        }
+                      }
                     }}
                   />
                   {errors.file && touched.file && (
@@ -97,6 +166,11 @@ const FileUpload = () => {
             </Form>
           )}
         </Formik>
+        {textResult !== "" && (
+          <div className="flex justify-center items-center h-full text-base">
+            {textResult}
+          </div>
+        )}
       </div>
     </div>
   );
