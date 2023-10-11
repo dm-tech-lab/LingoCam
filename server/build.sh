@@ -2,8 +2,6 @@
 # exit on error
 set -o errexit
 
-sudo apt install tesseract-ocr
-
 pipenv install
 
 python manage.py collectstatic --no-input

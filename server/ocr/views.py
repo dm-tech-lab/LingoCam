@@ -1,5 +1,5 @@
 from .models import *
-from .serializers import ImageUploadSerializer
+from .serializers import *
 
 import platform
 import pytesseract

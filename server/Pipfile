@@ -20,6 +20,7 @@ numpy = "*"
 pillow = "*"
 deep-translator = "*"
 pytesseract = "*"
+openai = "*"
 
 [dev-packages]
 

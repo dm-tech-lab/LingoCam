@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "sslserver",
     
     # Local Applications
+    "qa",
     "ocr",
 ]
 
