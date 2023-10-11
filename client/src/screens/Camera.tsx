@@ -6,6 +6,8 @@ import { useLoading } from "../context/LoadingContext";
 import Modal from "react-modal";
 import { Field, Form, Formik } from "formik";
 import { QASchema } from "../schemas/QASchema";
+import { showErrorToast } from "../utils/Toast";
+import { toast } from "react-toastify";
 
 interface IGPTValuesForm {
   question: string;
@@ -66,7 +68,12 @@ const Camera = () => {
     });
 
     const response = await data.json();
-    setTransatedText(response.result);
+    if (response.result === "")
+      showErrorToast("Cannot translate the current image!", () =>
+        toast.dismiss()
+      );
+    else setTransatedText(response.result);
+
     setLoading(false);
 
     setIsTranslateModalOpen(true);
