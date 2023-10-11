@@ -52,7 +52,7 @@ const Camera = () => {
   const askGPT = async () => {
     setLoading(true);
 
-    const data = await fetch(`${API_URL}/qa`, {
+    const data = await fetch(`${API_URL}/qa/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
