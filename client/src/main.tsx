@@ -11,6 +11,7 @@ import Camera from "./screens/Camera.tsx";
 import "react-toastify/dist/ReactToastify.css";
 import EmailVerified from "./screens/EmailVerified.tsx";
 import Error404 from "./screens/Error404.tsx";
+import FileUpload from "./screens/FileUpload.tsx";
 
 // // add this to prompt for a refresh
 const updateSW = registerSW({
@@ -40,6 +41,11 @@ const router = createBrowserRouter([
   {
     path: "/email-verified/",
     element: <EmailVerified />,
+    loader: () => <MainLoader />,
+  },
+  {
+    path: "/file-upload",
+    element: <FileUpload />,
     loader: () => <MainLoader />,
   },
   {

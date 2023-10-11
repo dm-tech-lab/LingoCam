@@ -9,6 +9,7 @@ import { QASchema } from "../schemas/QASchema";
 import { showErrorToast } from "../utils/Toast";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../components/shared/Loader";
+import { useNavigate } from "react-router-dom";
 
 interface IGPTValuesForm {
   question: string;
@@ -26,6 +27,8 @@ const Camera = () => {
 
   const [isGPTModalOpen, setIsGPTModalOpen] = useState(false);
   const [isTranslateModalOpen, setIsTranslateModalOpen] = useState(false);
+  const [isGPTAnswerModalOpen, setIsGPTAnswerModalOpen] = useState(false);
+
   const [isMobile, setIsMobile] = useState(false);
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
@@ -35,6 +38,7 @@ const Camera = () => {
   const webcamRef = useRef<any>(null);
 
   const { setLoading } = useLoading();
+  const navigate = useNavigate();
 
   // const handleSwitchCamera = useCallback(() => {
   //   setFacingMode((prevState) =>
@@ -53,6 +57,10 @@ const Camera = () => {
       setIsMobile(true);
     else setIsMobile(false);
   }, []);
+
+  const handleCameraError = (err) => {
+    if (err.name === 'NotAllowedError') navigate('/file-upload')
+  };
 
   const capturePhoto = useCallback(async () => {
     setLoading(true);
@@ -97,8 +105,10 @@ const Camera = () => {
     });
     const response = await data.json();
     setGPTAnswer(response.answer);
+    console.log(response.answer);
 
     setIsGPTModalOpen(false);
+    setIsGPTAnswerModalOpen(true);
     setLoading(false);
   };
 
@@ -119,6 +129,7 @@ const Camera = () => {
           ...videoConstraints,
           facingMode,
         }}
+        onUserMediaError={handleCameraError}
         style={{
           position: "absolute",
           textAlign: "center",
@@ -174,26 +185,24 @@ const Camera = () => {
         >
           {({ errors, touched }) => (
             <Form className="flex justify-center items-center flex-col">
-              <div>
-                <label
-                  htmlFor="question"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Question
-                </label>
-                <Field
-                  type="text"
-                  name="question"
-                  id="question"
-                  placeholder="Question about the translated text"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  autoComplete="true"
-                />
-                {errors.question && touched.question && (
-                  <div className="text-sm text-red-500">{errors.question}</div>
-                )}
-              </div>
+              <label
+                htmlFor="question"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Question
+              </label>
+              <Field
+                type="text"
+                name="question"
+                id="question"
+                placeholder="About the translated text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+                autoComplete="true"
+              />
+              {errors.question && touched.question && (
+                <div className="text-sm text-red-500">{errors.question}</div>
+              )}
 
               <div className="flex justify-center items-center w-full">
                 <button
@@ -243,7 +252,7 @@ const Camera = () => {
         </div>
       </Modal>
       <Modal
-        isOpen={isGPTModalOpen}
+        isOpen={isGPTAnswerModalOpen}
         contentLabel="GPT Modal"
         style={{
           overlay: {
@@ -262,11 +271,11 @@ const Camera = () => {
             borderRadius: "20px",
           },
         }}
-        onRequestClose={() => setIsGPTModalOpen(false)}
+        onRequestClose={() => setIsGPTAnswerModalOpen(false)}
         shouldCloseOnOverlayClick={true}
         ariaHideApp={false}
       >
-        <div>{gptAnswer}</div>
+        <div className="text-base">{gptAnswer}</div>
       </Modal>
     </div>
   );
