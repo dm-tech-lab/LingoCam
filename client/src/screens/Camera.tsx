@@ -54,7 +54,13 @@ const Camera = () => {
 
     const data = await fetch(`${API_URL}/qa`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        question: "",
+        context: "",
+      }),
     });
     const response = await data.json();
     console.log(response);
