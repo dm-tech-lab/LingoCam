@@ -7,7 +7,8 @@ import Modal from "react-modal";
 import { Field, Form, Formik } from "formik";
 import { QASchema } from "../schemas/QASchema";
 import { showErrorToast } from "../utils/Toast";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import Loader from "../components/shared/Loader";
 
 interface IGPTValuesForm {
   question: string;
@@ -107,6 +108,8 @@ const Camera = () => {
 
   return (
     <div className="flex">
+      <Loader />
+      <ToastContainer style={{ zIndex: "99999" }} />
       <Webcam
         ref={webcamRef}
         audio={false}
