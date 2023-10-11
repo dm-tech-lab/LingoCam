@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
 import { API_URL } from "../constants/urls";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { showErrorToast } from "../utils/Toast";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../components/shared/Loader";
