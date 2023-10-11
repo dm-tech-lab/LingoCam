@@ -7,6 +7,10 @@ import Modal from "react-modal";
 import { Field, Form, Formik } from "formik";
 import { QASchema } from "../schemas/QASchema";
 
+interface IGPTValuesForm {
+  question: string;
+}
+
 const FACING_MODE_USER = "user";
 const FACING_MODE_ENVIRONMENT = "environment";
 
@@ -17,10 +21,15 @@ const videoConstraints = {
 const Camera = () => {
   useProtectedRoute();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isGPTModalOpen, setIsGPTModalOpen] = useState(false);
+  const [isTranslateModalOpen, setIsTranslateModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const webcamRef = useRef<any>(null);
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
+
+  const [translatedText, setTransatedText] = useState("");
+  const [gptAnswer, setGPTAnswer] = useState("");
+
+  const webcamRef = useRef<any>(null);
 
   const { setLoading } = useLoading();
 
@@ -57,16 +66,18 @@ const Camera = () => {
     });
 
     const response = await data.json();
-    console.log(response);
+    setTransatedText(response.result);
     setLoading(false);
+
+    setIsTranslateModalOpen(true);
   }, [webcamRef]);
 
-  const askGPT = async () => {
+  const askGPT = async (values: IGPTValuesForm) => {
     setLoading(true);
 
     const formData = new FormData();
-    formData.append("question", "Обобщи");
-    formData.append("context", "Втората световна война");
+    formData.append("question", values.question);
+    formData.append("context", translatedText);
 
     const data = await fetch(`${API_URL}/qa/`, {
       method: "POST",
@@ -76,8 +87,14 @@ const Camera = () => {
       body: formData,
     });
     const response = await data.json();
-    console.log(response);
+    setGPTAnswer(response.answer);
+
     setLoading(false);
+  };
+
+  const openGPTModal = () => {
+    setIsTranslateModalOpen(false);
+    setIsGPTModalOpen(true);
   };
 
   return (
@@ -107,14 +124,14 @@ const Camera = () => {
         Capture photo
       </button>
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsTranslateModalOpen(true)}
         className="z-50 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
         Show translated Text
       </button>
       <Modal
-        isOpen={isModalOpen}
-        contentLabel="Login Modal Modal"
+        isOpen={isGPTModalOpen}
+        contentLabel="GPT Modal"
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -132,17 +149,16 @@ const Camera = () => {
             borderRadius: "20px",
           },
         }}
-        onRequestClose={() => setIsModalOpen(false)}
+        onRequestClose={() => setIsGPTModalOpen(false)}
         shouldCloseOnOverlayClick={true}
         ariaHideApp={false}
       >
         <Formik
           initialValues={{
-            context: "",
             question: "",
           }}
           validationSchema={QASchema}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={(values: IGPTValuesForm) => askGPT(values)}
         >
           {({ errors, touched }) => (
             <Form className="flex justify-center items-center flex-col">
@@ -166,36 +182,53 @@ const Camera = () => {
                   <div className="text-sm text-red-500">{errors.question}</div>
                 )}
               </div>
-              <div>
-                <label
-                  htmlFor="context"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+
+              <div className="flex justify-center items-center w-full">
+                <button
+                  type="submit"
+                  className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
-                  Context
-                </label>
-                <Field
-                  type="text"
-                  name="context"
-                  id="context"
-                  placeholder="Context of the question"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  autoComplete="true"
-                />
-                {errors.context && touched.context && (
-                  <div className="text-sm text-red-500">{errors.context}</div>
-                )}
+                  SEND GPT
+                </button>
               </div>
-              <button
-                onClick={askGPT}
-                type="submit"
-                className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              >
-                Ask GPT
-              </button>
             </Form>
           )}
         </Formik>
+      </Modal>
+      <Modal
+        isOpen={isTranslateModalOpen}
+        contentLabel="Translate Modal"
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            maxWidth: "1000px",
+            minWidth: isMobile ? "90%" : "50%",
+            padding: "60px 50px",
+            fontSize: "2rem",
+            borderRadius: "20px",
+          },
+        }}
+        onRequestClose={() => setIsTranslateModalOpen(false)}
+        shouldCloseOnOverlayClick={true}
+        ariaHideApp={false}
+      >
+        <div className="text-base	font-normal">{translatedText}</div>
+        <div className="flex justify-center items-center w-full">
+          <button
+            onClick={openGPTModal}
+            type="submit"
+            className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Ask GPT
+          </button>
+        </div>
       </Modal>
     </div>
   );
