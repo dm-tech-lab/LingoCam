@@ -34,6 +34,8 @@ const Camera = () => {
   const [facingMode] = useState(FACING_MODE_ENVIRONMENT);
 
   const [translatedText, setTransatedText] = useState("");
+  const [translatedENGText, setTransatedENGText] = useState("");
+
   const [gptAnswer, setGPTAnswer] = useState("");
 
   const webcamRef = useRef<any>(null);
@@ -84,7 +86,7 @@ const Camera = () => {
       );
 
     setTransatedText(response.text);
-
+    setTransatedENGText(response.result)
     setLoading(false);
 
     if (response.text !== "") setIsTranslateModalOpen(true);
@@ -265,7 +267,7 @@ const Camera = () => {
         shouldCloseOnOverlayClick={true}
         ariaHideApp={false}
       >
-        <div className="text-base	font-normal">{translatedText}</div>
+        <div className="text-base	font-normal">{translatedENGText}</div>
         <div className="flex justify-center items-center w-full">
           <button
             onClick={openGPTModal}
