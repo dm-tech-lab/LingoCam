@@ -236,6 +236,7 @@ const Camera = () => {
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 9999,
           },
           content: {
             top: "50%",
@@ -248,6 +249,9 @@ const Camera = () => {
             padding: "60px 50px",
             fontSize: "2rem",
             borderRadius: "20px",
+            zIndex: 10000, 
+            overflowY: "auto", 
+            maxHeight: "70vh", 
           },
         }}
         onRequestClose={() => setIsTranslateModalOpen(false)}
