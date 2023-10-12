@@ -101,7 +101,7 @@ const FileUpload = () => {
                     type="file"
                     name="file"
                     id="file"
-                    accept=".jpg, .jpeg, .png, .pdf"
+                    accept=".jpg, .jpeg, .png"
                     className="sr-only"
                     onChange={(event) => {
                       const selectedFile = event.currentTarget.files![0];
@@ -112,7 +112,6 @@ const FileUpload = () => {
                           "image/jpeg",
                           "image/jpg",
                           "image/png",
-                          "application/pdf",
                         ];
 
                         if (allowedFileTypes.includes(fileType)) {
