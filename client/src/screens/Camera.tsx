@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import Modal from "react-modal";
 import Loader from "../components/shared/Loader";
-import '../style/style.css'
+import "../style/style.css";
 
 interface IGPTValuesForm {
   question: string;
@@ -223,7 +223,7 @@ const Camera = () => {
                   type="submit"
                   className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
-                  SEND GPT
+                  SUBMIT
                 </button>
               </div>
             </Form>
@@ -261,7 +261,7 @@ const Camera = () => {
             type="submit"
             className="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           >
-            Ask GPT
+            ASK
           </button>
         </div>
       </Modal>
