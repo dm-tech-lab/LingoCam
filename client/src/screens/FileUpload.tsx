@@ -34,7 +34,7 @@ const FileUpload = () => {
       body: formData,
     });
     const response = await data.json();
-    setTextResult(response.result);
+    setTextResult(response.text);
 
     setLoading(false);
   };
