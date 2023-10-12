@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import Modal from "react-modal";
 import Loader from "../components/shared/Loader";
+import '../style/style.css'
 
 interface IGPTValuesForm {
   question: string;
@@ -265,6 +266,7 @@ const Camera = () => {
         </div>
       </Modal>
       <Modal
+        className="gpt-modal"
         isOpen={isGPTAnswerModalOpen}
         contentLabel="GPT Modal"
         style={{
@@ -283,6 +285,7 @@ const Camera = () => {
             fontSize: "2rem",
             borderRadius: "20px",
           },
+          zIndex: "99999999",
         }}
         onRequestClose={() => setIsGPTAnswerModalOpen(false)}
         shouldCloseOnOverlayClick={true}
