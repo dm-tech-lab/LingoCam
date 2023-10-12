@@ -78,16 +78,16 @@ const Camera = () => {
     });
 
     const response = await data.json();
-    if (response.result === "")
+    if (response.text === "")
       showErrorToast("Cannot translate the current image!", () =>
         toast.dismiss()
       );
 
-    setTransatedText(response.result);
+    setTransatedText(response.text);
 
     setLoading(false);
 
-    if (response.result !== "") setIsTranslateModalOpen(true);
+    if (response.text !== "") setIsTranslateModalOpen(true);
   }, [webcamRef]);
 
   const askGPT = async (values: IGPTValuesForm) => {
