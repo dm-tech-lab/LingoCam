@@ -119,7 +119,7 @@ const Camera = () => {
 
   const showTranslatedTextModal = () => {
     if (translatedText !== "") setIsTranslateModalOpen(true);
-    else showInfoToast("Please capture phone", () => toast.dismiss());
+    else showInfoToast("Please capture photo", () => toast.dismiss());
   };
 
   return (
