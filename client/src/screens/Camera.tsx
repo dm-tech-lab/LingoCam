@@ -117,6 +117,10 @@ const Camera = () => {
     setIsGPTModalOpen(true);
   };
 
+  const showTranslatedTextModal = () => {
+    if (translatedText !== "") setIsTranslateModalOpen(true);
+  };
+
   return (
     <div className="flex">
       <Loader />
@@ -155,7 +159,7 @@ const Camera = () => {
         Capture photo
       </button>
       <button
-        onClick={() => setIsTranslateModalOpen(true)}
+        onClick={showTranslatedTextModal}
         className="z-50 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
         Show translated Text
