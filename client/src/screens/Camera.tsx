@@ -4,7 +4,7 @@ import { API_URL } from "../constants/urls";
 import { useLoading } from "../context/LoadingContext";
 import { Field, Form, Formik } from "formik";
 import { QASchema } from "../schemas/QASchema";
-import { showErrorToast } from "../utils/Toast";
+import { showErrorToast, showInfoToast } from "../utils/Toast";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
@@ -119,6 +119,7 @@ const Camera = () => {
 
   const showTranslatedTextModal = () => {
     if (translatedText !== "") setIsTranslateModalOpen(true);
+    else showInfoToast("Please capture phone", () => toast.dismiss());
   };
 
   return (
