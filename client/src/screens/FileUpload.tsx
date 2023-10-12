@@ -12,6 +12,7 @@ const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState("");
   const [base64String, setBase64String] = useState("");
   const [textResult, setTextResult] = useState("");
+  const [textENGResult, setTextENGResult] = useState("")
 
   const navigate = useNavigate();
   const { setLoading } = useLoading();
@@ -35,6 +36,7 @@ const FileUpload = () => {
     });
     const response = await data.json();
     setTextResult(response.text);
+    setTextENGResult(response.result)
 
     setLoading(false);
   };
@@ -65,6 +67,8 @@ const FileUpload = () => {
 
     return window.btoa(binary);
   };
+
+  const translateToEnglishText = () => setTextResult(textENGResult)
 
   return (
     <div className="flex items-center justify-center">
@@ -161,6 +165,13 @@ const FileUpload = () => {
                   className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
                 >
                   Send File
+                </button>
+                <button
+                onClick={translateToEnglishText}
+                  type="button"
+                  className="mt-4 hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+                >
+                  Translate
                 </button>
               </div>
             </Form>
