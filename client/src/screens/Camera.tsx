@@ -103,6 +103,7 @@ const Camera = () => {
         Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
       body: formData,
+      signal: Timeout(120).signal,
     });
     const response = await data.json();
     setGPTAnswer(response.answer);
@@ -111,6 +112,12 @@ const Camera = () => {
     setIsGPTModalOpen(false);
     setIsGPTAnswerModalOpen(true);
     setLoading(false);
+  };
+
+  const Timeout = (time) => {
+    let controller = new AbortController();
+    setTimeout(() => controller.abort(), time * 1000);
+    return controller;
   };
 
   const openGPTModal = () => {
